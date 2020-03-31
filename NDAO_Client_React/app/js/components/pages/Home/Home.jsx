@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Row, Col, Button, Collapse } from 'mdbreact'
+import { Row, Col, Button, Collapse, NavLink } from 'mdbreact'
 import { DEAGreen, DEAGreenDark } from "../../../config/colours.js"
 import AME_Banner from './AME_Banner.jsx'
 import AME_Info from './AME_Info.jsx'
@@ -292,15 +292,17 @@ class Home extends React.Component {
               headers={['Id', 'Type', 'CreateDate', 'Status']}
               filename={"DAO-list.csv"}
               style={{
+                minHeight: 35,
                 marginRight: 15,
                 textDecoration: 'none',
                 color: 'white',
                 backgroundColor: DEAGreen,
-                padding: "10px 25px 11px 25px",
+                padding: "12px 25px 10px 25px",
                 borderRadius: 2,
-                fontSize: 11,
-                border: "1px solid dimgrey",
-                fontWeight: 400
+                fontSize: 10,
+                // border: "1px solid dimgrey",
+                fontWeight: 400,
+                boxShadow:"0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15)"
               }}
               asyncOnClick={true}
             >
@@ -318,6 +320,29 @@ class Home extends React.Component {
                 marginLeft: 0
               }}
               color="warning">Submit your contribution
+            </Button>
+            <Button
+              color=""
+              style={{ 
+                minHeight: 35,
+                //paddingTop: 10,
+                marginRight: 0,
+                marginLeft: 15,
+                backgroundColor: DEAGreen }}
+              size="sm"
+              onClick={() => {
+                // if (!user || user.expired) {
+                //   <NavLink to="/login"><b>Login</b></NavLink>
+                //   // notification.warning({
+                //   //   message: 'Please login to submit your contribution.'
+                //   // })
+                // }
+                // else {
+                  window.open("https://drive.google.com/file/d/1ebKu_C9SEy36gnHMQS7B3Lgb7QqObeVR/view?usp=sharing")
+                }
+              }>
+              
+              Bulk upload
             </Button>
           </Col>
         </Row>
