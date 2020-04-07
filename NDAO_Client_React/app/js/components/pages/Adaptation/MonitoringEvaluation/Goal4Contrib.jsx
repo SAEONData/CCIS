@@ -11,6 +11,7 @@ import TreeSelectInput from '../../../input/TreeSelectInput.jsx'
 import OData from 'react-odata'
 import buildQuery from 'odata-query'
 import FileUpload from '../../../input/FileUpload.jsx'
+import { metaKeywordsList } from '../../../../../data/metaKeywordsList.js'
 
 //Ant.D
 import Slider from 'antd/lib/slider'
@@ -21,6 +22,7 @@ import checklist from '../../../../../images/Icons/checklist.png'
 import { CustomFetch } from '../../../../globalFunctions.js';
 
 const _gf = require('../../../../globalFunctions')
+const _sf = require('./SharedFunctions.js')
 
 const mapStateToProps = (state, props) => {
   let user = state.oidc.user
@@ -54,7 +56,19 @@ const defaultState = {
   Q4_3_D: 0, //PartneringDepartments
   Q4_4: 0, //Region
   Q4_5: "", //Institution
-  Q4_6: 0 //Sector
+  Q4_6: 0, //Sector
+  metaAddAuthorModal: false,
+  tmpMetaAuthorName: "",
+  tmpMetaAuthorEmail: "",
+  tmpMetaAuthorInstitution: "",
+  metaAuthors: [],
+  metaDocTitle: "",
+  metaKeywords: [],
+  metaDocDescr: "",
+  metaAgreement: false,
+  metaUID: "",
+  metaRegion: "",
+  isDraft: false
 }
 
 class Goal4Contrib extends React.Component {
@@ -173,6 +187,15 @@ class Goal4Contrib extends React.Component {
           Q4_4: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value),
           Q4_5: data.Questions.filter(x => x.Key === "Institution")[0].Value,
           Q4_6: parseInt(data.Questions.filter(x => x.Key === "Sector")[0].Value),
+          metaAuthors: data.Questions.filter(x => x.Key === "DocumentAuthors")[0].Value.split("||"),
+          metaDocTitle: data.Questions.filter(x => x.Key === "DocumentTitle")[0].Value,
+          metaKeywords: data.Questions.filter(x => x.Key === "DocumentKeywords")[0].Value.split("||"),
+          metaDocDescr: data.Questions.filter(x => x.Key === "DocumentDescription")[0].Value,
+          metaAgreement: data.Questions.filter(x => x.Key === "DocumentAgreement")[0].Value === 'true',
+          metaUID: data.Questions.filter(x => x.Key === "MetaDataUID")[0].Value,
+          metaRegion: data.Questions.filter(x => x.Key === "RegionName")[0].Value,
+          attachmentDetails: JSON.parse(data.Questions.filter(x => x.Key === "DocumentDetails")[0].Value),
+          isDraft: data.Questions.filter(x => x.Key === "IsDraft")[0].Value === 'true'
         })
       }
 
@@ -223,7 +246,13 @@ class Goal4Contrib extends React.Component {
         { Key: "Institution", Value: Q4_5 },
         { Key: "Sector", Value: Q4_6.toString() },
         { Key: "DocumentLink", Value: Q4_2 },
-        { Key: "DocumentAuthors", }
+        { Key: "DocumentAuthors", Value: metaAuthors.join("||") },
+        { Key: "DocumentTitle", Value: metaDocTitle },
+        { Key: "DocumentKeywords", Value: metaKeywords.join("||") },
+        { Key: "DocumentDescription", Value: metaDocDescr },
+        { Key: "DocumentAgreement", Value: metaAgreement.toString() },
+        { Key: "MetaDataUID", Value: metaUID },
+        { Key: "IsDraft", Value: isDraft }
       ]
     }
 
@@ -266,7 +295,10 @@ class Goal4Contrib extends React.Component {
 
   render() {
 
-    let { editing, goalStatus, goalId, Q4_2, Q4_1, Q4_3, Q4_3_A, Q4_3_B, Q4_3_C, Q4_3_D, Q4_4, Q4_5, Q4_6 } = this.state
+    let { editing, goalStatus, goalId, Q4_2, Q4_1, Q4_3, Q4_3_A, Q4_3_B, Q4_3_C, Q4_3_D, Q4_4, Q4_5, Q4_6,
+      metaAddAuthorModal, metaAuthors, tmpMetaAuthorName, tmpMetaAuthorEmail,
+      tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement, isDraft 
+    } = this.state
 
     return (
       <>
@@ -421,10 +453,7 @@ class Goal4Contrib extends React.Component {
               </Col>
             </Row>
 
-            {
-             !_gf.isEmptyValue(Q4_2) &&
-              
-              <div>
+          
                 <Row style={{ marginLeft: "0px" }}>
                   <Col md="12">
                     <label style={{ fontWeight: "bold" }}>
@@ -545,8 +574,8 @@ class Goal4Contrib extends React.Component {
 
               </Col>
             </Row>
-            </div>
-            }
+
+            
             <br />
 
             
@@ -897,7 +926,86 @@ class Goal4Contrib extends React.Component {
             </ModalFooter>
           </Modal>
         </Container>
-
+ {/* Add author modal */}
+ <Modal isOpen={this.state.metaAddAuthorModal} toggle={() => { this.setState({ metaAddAuthorModal: false }) }} centered>
+          <ModalHeader toggle={() => { this.setState({ metaAddAuthorModal: false }) }}>
+            Add author details:
+                </ModalHeader>
+          <ModalBody>
+            <Row>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  Name:
+                        <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                </label>
+                <TextInput
+                  width="95%"
+                  value={tmpMetaAuthorName}
+                  callback={(value) => {
+                    this.setState({ tmpMetaAuthorName: value }) // console.log(value)
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  Email:
+                        <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                </label>
+                <TextInput
+                  width="95%"
+                  value={tmpMetaAuthorEmail}
+                  callback={(value) => {
+                    this.setState({ tmpMetaAuthorEmail: value })
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  Institution:
+                        <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                </label>
+                <TextInput
+                  width="95%"
+                  value={tmpMetaAuthorInstitution}
+                  callback={(value) => {
+                    this.setState({ tmpMetaAuthorInstitution: value })
+                  }}
+                />
+              </Col>
+            </Row>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              disabled={_gf.isEmptyValue(tmpMetaAuthorName) || _gf.isEmptyValue(tmpMetaAuthorEmail) || _gf.isEmptyValue(tmpMetaAuthorInstitution)}
+              size="sm"
+              style={{ width: "100px", backgroundColor: DEAGreen }}
+              color="" onClick={() => this.setState({
+                metaAddAuthorModal: false,
+                metaAuthors: [...metaAuthors, `${tmpMetaAuthorName}, ${tmpMetaAuthorEmail}, ${tmpMetaAuthorInstitution}`],
+                tmpMetaAuthorName: "",
+                tmpMetaAuthorEmail: "",
+                tmpMetaAuthorInstitution: ""
+              })}
+            >
+              Add
+                  </Button>
+            <Button
+              size="sm"
+              style={{ width: "100px", backgroundColor: DEAGreen }}
+              color="" onClick={() => this.setState({
+                metaAddAuthorModal: false,
+                tmpMetaAuthorName: "",
+                tmpMetaAuthorEmail: "",
+                tmpMetaAuthorInstitution: ""
+              })} >
+              Cancel
+                  </Button>
+          </ModalFooter>
+        </Modal>
       </>
     )
   }
