@@ -12,6 +12,8 @@ import OData from 'react-odata'
 import buildQuery from 'odata-query'
 import FileUpload from '../../../input/FileUpload.jsx'
 import { metaDataCredentials } from '../../../../../js/secrets.js'
+import TextAreaInput from '../../../input/TextAreaInput.jsx'
+
 
 //Ant.D
 import Slider from 'antd/lib/slider'
@@ -543,6 +545,8 @@ class Goal3Contrib extends React.Component {
       Q3_1, Q3_2, Q3_3, Q3_4, Q3_4_A, Q3_4_B, Q3_4_C, Q3_4_D, Q3_5, Q3_6, Q3_7
     } = this.state
 
+    let { user } = this.props
+
 
     return (
       <>
@@ -764,10 +768,7 @@ class Goal3Contrib extends React.Component {
               </Col>
             </Row>
 
-            {
-             !_gf.isEmptyValue(Q3_3) &&
-              
-              <div>
+            
                 <Row style={{ marginLeft: "0px" }}>
                   <Col md="12">
                     <label style={{ fontWeight: "bold" }}>
@@ -815,19 +816,21 @@ class Goal3Contrib extends React.Component {
                     <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                     </label>
                     <TreeSelectInput
+                      allowClear
                       multiple
-                      defaultValue={[]}
+                      initialValue={''}
                       data={metaKeywordsList}
                       transform={(item) => ({ id: item, text: item })}
-                      value={metaKeywords}
+                      value={metaKeywords || ''}
+                      placeholder='select'
                       callback={(value) => {
-                        this.setState({ metaKeywords: value })
+                        this.setState({ metaKeywords: value || ''})
                       }}
                     />
                   </Col>
                 </Row>
                 <br />
-
+{/* 
                 <Row style={{ marginLeft: "0px" }}>
                   <Col md="12">
                     <label style={{ fontWeight: "bold" }}>
@@ -844,7 +847,7 @@ class Goal3Contrib extends React.Component {
                     />
                   </Col>
                 </Row>
-                <br />
+                <br /> */}
                 <Row style={{ marginLeft: "0px" }}>
                   <Col md="12">
                     <label style={{ fontWeight: "bold" }}>
@@ -877,36 +880,35 @@ class Goal3Contrib extends React.Component {
              
             
 
-            <br />
+                <br />
 
-            <Row style={{ marginLeft: "0px" }}>
-              <Col md="12">
-                <label style={{ fontWeight: "bold" }}>
-                  Is this a final or draft document?
-                </label>
-              </Col>
-            </Row>
-            <Row style={{ marginLeft: "0px" }}>
-              <Col md="12">
-                <Button
-                  onClick={() => { this.setState({ isDraft: true }) }}
-                  color=""
-                  style={{ fontSize: isDraft ? "13px" : "10px", marginLeft: "0px", backgroundColor: isDraft ? DEAGreen : "grey" }}
-                  size="sm">
-                  Draft
-                </Button>
-                <Button
-                  onClick={() => { this.setState({ isDraft: false }) }}
-                  color=""
-                  style={{ fontSize: !isDraft ? "13px" : "10px", backgroundColor: !isDraft ? DEAGreen : "grey" }}
-                  size="sm">
-                  Final
-                </Button>
+                <Row style={{ marginLeft: "0px" }}>
+                  <Col md="12">
+                    <label style={{ fontWeight: "bold" }}>
+                      Is this a final or draft document?
+                    </label>
+                  </Col>
+                </Row>
+                <Row style={{ marginLeft: "0px" }}>
+                  <Col md="12">
+                    <Button
+                      onClick={() => { this.setState({ isDraft: true }) }}
+                      color=""
+                      style={{ fontSize: isDraft ? "13px" : "10px", marginLeft: "0px", backgroundColor: isDraft ? DEAGreen : "grey" }}
+                      size="sm">
+                      Draft
+                    </Button>
+                    <Button
+                      onClick={() => { this.setState({ isDraft: false }) }}
+                      color=""
+                      style={{ fontSize: !isDraft ? "13px" : "10px", backgroundColor: !isDraft ? DEAGreen : "grey" }}
+                      size="sm">
+                      Final
+                    </Button>
 
-              </Col>
-            </Row>
-            </div>
-            }
+                  </Col>
+                </Row>
+             
             <br />
 
             <Row style={{ marginBottom: "2px" }}>
