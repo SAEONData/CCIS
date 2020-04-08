@@ -252,7 +252,7 @@ class Goal4Contrib extends React.Component {
         { Key: "DocumentDescription", Value: metaDocDescr },
         { Key: "DocumentAgreement", Value: metaAgreement.toString() },
         { Key: "MetaDataUID", Value: metaUID },
-        { Key: "IsDraft", Value: isDraft }
+        // { Key: "IsDraft", Value: isDraft }
       ]
     }
 
@@ -273,13 +273,11 @@ class Goal4Contrib extends React.Component {
         throw new Error(res.error.message)
       }
 
-      setLoading(false)
       this.showMessage("Success", "Goal submitted successfully")
       await this.waitForMessageClosed()
       this.reset()
     }
     catch (ex) {
-      setLoading(false)
       console.error(ex)
       this.showMessage("An error occurred", ex.message)
     }
@@ -545,7 +543,7 @@ class Goal4Contrib extends React.Component {
                 </Row>
              
             
-
+{/* 
             <br />
 
             <Row style={{ marginLeft: "0px" }}>
@@ -573,7 +571,7 @@ class Goal4Contrib extends React.Component {
                 </Button>
 
               </Col>
-            </Row>
+            </Row> */}
 
             
             <br />

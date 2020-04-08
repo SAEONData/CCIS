@@ -90,6 +90,19 @@ class Goal3Contrib extends React.Component {
     this.state = defaultState
   }
 
+  
+  showMessage(title, message) {
+
+    let { setLoading } = this.props
+    setLoading(true)
+
+    this.setState({
+      title,
+      message,
+      messageModal: true
+    })
+  }
+
   componentDidMount() {
     this.props.updateNav(location.hash)
   }
@@ -262,12 +275,7 @@ class Goal3Contrib extends React.Component {
   validate() {
     let { Q3_3, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement, metaAuthors } = this.state
 
-    if (Q3_3 === true) {
-
-      if (_gf.isEmptyValue(Q3_3)) {
-        this.showMessage("Required", "Document attachment required - please attach a document.")
-        return false
-      }
+    if (!_gf.isEmptyValue(Q3_3)) {
 
       if (metaAuthors.length === 0) {
         this.showMessage("Required", "Document author(s) required - please add at least one author.")
@@ -332,7 +340,7 @@ class Goal3Contrib extends React.Component {
         { Key: "DocumentAgreement", Value: metaAgreement.toString() },
         { Key: "RegionName", Value: metaRegion.toString() },
         { Key: "MetaDataUID", Value: metaUID },
-        { Key: "IsDraft", Value: isDraft }
+        // { Key: "IsDraft", Value: isDraft }
 
       ]
     }
@@ -353,13 +361,12 @@ class Goal3Contrib extends React.Component {
         res = await res.json()
         throw new Error(res.error.message)
       }
-      setLoading(false)
+
       this.showMessage("Success", "Goal submitted successfully")
       await this.waitForMessageClosed()
       this.reset()
     }
     catch (ex) {
-      setLoading(false)
       console.error(ex)
       this.showMessage("An error occurred", ex.message)
     }
@@ -540,7 +547,7 @@ class Goal3Contrib extends React.Component {
 
   render() {
 
-    let { editing, goalStatus, goalId, metaAuthors, metaAddAuthorModal, metaAgreement, isDraft, metaKeywords, metaKeywordsList,
+    let { editing, goalStatus, goalId, metaAuthors, metaAddAuthorModal, metaAgreement, isDrafft, metaKeywords, metaKeywordsList,
       metaDocDescr, metaDocTitle, tmpMetaAuthorEmail, tmpMetaAuthorInstitution, tmpMetaAuthorName, TextAreaInput, attachmentDetails,
       Q3_1, Q3_2, Q3_3, Q3_4, Q3_4_A, Q3_4_B, Q3_4_C, Q3_4_D, Q3_5, Q3_6, Q3_7
     } = this.state
@@ -882,7 +889,7 @@ class Goal3Contrib extends React.Component {
 
                 <br />
 
-                <Row style={{ marginLeft: "0px" }}>
+                {/* <Row style={{ marginLeft: "0px" }}>
                   <Col md="12">
                     <label style={{ fontWeight: "bold" }}>
                       Is this a final or draft document?
@@ -909,7 +916,7 @@ class Goal3Contrib extends React.Component {
                   </Col>
                 </Row>
              
-            <br />
+            <br /> */}
 
             <Row style={{ marginBottom: "2px" }}>
               <Col md="12">
