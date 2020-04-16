@@ -70,7 +70,7 @@ const defaultState = {
   metaAgreement: false,
   metaUID: "",
   metaRegion: "",
-  isDraft: false
+  // isDraft: false
 }
 
 class Goal1Contrib extends React.Component {
@@ -148,7 +148,7 @@ class Goal1Contrib extends React.Component {
           metaUID: data.Questions.filter(x => x.Key === "MetaDataUID")[0].Value,
           metaRegion: data.Questions.filter(x => x.Key === "RegionName")[0].Value,
           attachmentDetails: JSON.parse(data.Questions.filter(x => x.Key === "DocumentDetails")[0].Value),
-          isDraft: data.Questions.filter(x => x.Key === "IsDraft")[0].Value === 'true'
+          // isDraft: data.Questions.filter(x => x.Key === "IsDraft")[0].Value === 'true'
         })
       }
 
@@ -223,7 +223,7 @@ class Goal1Contrib extends React.Component {
 
     let {
       goalId, goalStatus, Q1_1, Q1_3, Q1_4, Q1_5, Q1_6, Q1_7, metaAuthors, metaDocTitle, metaKeywords,
-      metaDocDescr, metaAgreement, attachmentDetails, metaRegion, isDraft
+      metaDocDescr, metaAgreement, attachmentDetails, metaRegion
     } = this.state
     let { user } = this.props
 
@@ -248,7 +248,7 @@ class Goal1Contrib extends React.Component {
         { Key: "DocumentDescription", Value: metaDocDescr },
         { Key: "DocumentAgreement", Value: metaAgreement.toString() },
         { Key: "MetaDataUID", Value: metaUID },
-        { Key: "IsDraft", Value: isDraft }
+        // { Key: "IsDraft", Value: isDraft }
       ]
     }
 
@@ -539,7 +539,7 @@ class Goal1Contrib extends React.Component {
     let {
       editing, goalId, goalStatus, showNCCRD, Q1_1, Q1_3, Q1_4, Q1_5, Q1_6, Q1_7,
       metaAddAuthorModal, metaAuthors, tmpMetaAuthorName, tmpMetaAuthorEmail,
-      tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement, isDraft
+      tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement
     } = this.state
 
     let { user } = this.props
@@ -770,7 +770,7 @@ class Goal1Contrib extends React.Component {
             </Row>
             <br />
 
-            <Row style={{ marginLeft: "0px" }}>
+            {/* <Row style={{ marginLeft: "0px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   Is this a final or draft document?
@@ -796,7 +796,7 @@ class Goal1Contrib extends React.Component {
                 
               </Col>
             </Row>
-            <br />
+            <br /> */}
 
             <Row style={{ marginLeft: "0px" }}>
               <Col md="12">
