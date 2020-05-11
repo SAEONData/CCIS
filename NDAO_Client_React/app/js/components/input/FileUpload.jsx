@@ -68,7 +68,7 @@ class FileUpload extends React.Component {
 
     //Remove
     try {
-      let res = await globalFunctions.CustomFetch(apiBaseURL + "RemoveFile", {
+      let res = await globalFunctions.CustomFetch(apiBaseURL + "FileManager/RemoveFile", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -114,7 +114,7 @@ class FileUpload extends React.Component {
 
     //Upload
     try {
-      let res = await globalFunctions.CustomFetch(apiBaseURL + "Uploads", {
+      let res = await globalFunctions.CustomFetch(apiBaseURL + "FileManager/UploadFile", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -134,7 +134,6 @@ class FileUpload extends React.Component {
         result.FileName= file.name
         result.Format = file.type
         result.Size = file.size
-
       }
       else {
         //Get response body

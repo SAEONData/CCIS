@@ -25,7 +25,8 @@ import MapViewCore from '../../visualization/Map/MapViewCore.jsx'
 // import SectorsIGFX from './InfoGraphics/SectorsIGFX.jsx'
 import GoalDetails from './GoalDetails.jsx'
 import { CSVLink } from 'react-csv'
-import { CustomFetch } from '../../../globalFunctions.js';
+import { CustomFetch } from '../../../globalFunctions.js'
+import ReactTooltip from 'react-tooltip'
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -288,6 +289,7 @@ class Home extends React.Component {
           </Col>
           <Col sm="6" style={{ textAlign: "right" }}>
             <CSVLink
+              data-tip data-for="dlTip"
               data={[...this.state.goalData]}
               headers={['Id', 'Type', 'CreateDate', 'Status']}
               filename={"DAO-list.csv"}
@@ -308,6 +310,9 @@ class Home extends React.Component {
             >
               DOWNLOAD DAO DATA
             </CSVLink>
+            <ReactTooltip id="dlTip" place="top" effect="solid">
+              To view the contents of this download, open the file as an Excel spreadsheet in Microsoft Excel
+            </ReactTooltip>
 
             <Button
               size="sm"
@@ -321,7 +326,7 @@ class Home extends React.Component {
               }}
               color="warning">Submit your contribution
             </Button>
-            <Button
+            {/* <Button
               color=""
               style={{ 
                 minHeight: 35,
@@ -343,7 +348,7 @@ class Home extends React.Component {
               }>
               
               Bulk upload
-            </Button>
+            </Button> */}
           </Col>
         </Row>
 

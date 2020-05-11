@@ -69,7 +69,7 @@ const defaultState = {
   metaDocDescr: "",
   metaAgreement: false,
   metaUID: "",
-  metaRegion: "",
+  metaRegion: ""
   // isDraft: false
 }
 
@@ -147,7 +147,7 @@ class Goal1Contrib extends React.Component {
           metaAgreement: data.Questions.filter(x => x.Key === "DocumentAgreement")[0].Value === 'true',
           metaUID: data.Questions.filter(x => x.Key === "MetaDataUID")[0].Value,
           metaRegion: data.Questions.filter(x => x.Key === "RegionName")[0].Value,
-          attachmentDetails: JSON.parse(data.Questions.filter(x => x.Key === "DocumentDetails")[0].Value),
+          attachmentDetails: JSON.parse(data.Questions.filter(x => x.Key === "DocumentDetails")[0].Value)
           // isDraft: data.Questions.filter(x => x.Key === "IsDraft")[0].Value === 'true'
         })
       }
@@ -187,32 +187,32 @@ class Goal1Contrib extends React.Component {
     } = this.state
 
     if(_gf.isEmptyValue(Q1_1)){
-      this.showMessage("Required", "Document attachment required - please attach a document?")
+      this.showMessage("Required", "Document attachment required - please attach a document")
       return false
     }
 
     if(metaAuthors.length === 0){
-      this.showMessage("Required", "Document author(s) required - please add at least one author?")
+      this.showMessage("Required", "Document author(s) required - please add at least one author")
       return false
     }
 
     if(_gf.isEmptyValue(metaDocTitle)){
-      this.showMessage("Required", "Document title required - please provide a title for your document?")
+      this.showMessage("Required", "Document title required - please provide a title for your document")
       return false
     }
 
     if(metaKeywords.length === 0){
-      this.showMessage("Required", "Document keywords required - please add at least one keyword?")
+      this.showMessage("Required", "Document keywords required - please add at least one keyword")
       return false
     }
 
     if(_gf.isEmptyValue(metaDocDescr)){
-      this.showMessage("Required", "Document description required - please provide a short abstract description of your document?")
+      this.showMessage("Required", "Document description required - please provide a short abstract description of your document")
       return false
     }
 
     if(metaAgreement === false){
-      this.showMessage("Required", "License agreement required - please accept the licence agreement?")
+      this.showMessage("Required", "License agreement required - please accept the licence agreement")
       return false
     }
 
@@ -247,7 +247,7 @@ class Goal1Contrib extends React.Component {
         { Key: "DocumentKeywords", Value: metaKeywords.join("||") },
         { Key: "DocumentDescription", Value: metaDocDescr },
         { Key: "DocumentAgreement", Value: metaAgreement.toString() },
-        { Key: "MetaDataUID", Value: metaUID },
+        { Key: "MetaDataUID", Value: metaUID }
         // { Key: "IsDraft", Value: isDraft }
       ]
     }
@@ -258,7 +258,7 @@ class Goal1Contrib extends React.Component {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer " + (user === null ? "" : user.access_token)
+          "Authorization": "Bearer " + (user === null )
         },
         body: JSON.stringify(goal)
       })
@@ -400,6 +400,8 @@ class Goal1Contrib extends React.Component {
       bounds: [] //required
     }
 
+    
+
     try {
       let res = await CustomFetch(metadataServiceURL, {
         method: "POST",
@@ -538,7 +540,7 @@ class Goal1Contrib extends React.Component {
 
     let {
       editing, goalId, goalStatus, showNCCRD, Q1_1, Q1_3, Q1_4, Q1_5, Q1_6, Q1_7,
-      metaAddAuthorModal, metaAuthors, tmpMetaAuthorName, tmpMetaAuthorEmail,
+      metaAddAuthorModal, metaAuthors, tmpMetaAuthorName, tmpMetaAuthorEmail, attachmentDetails, 
       tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement
     } = this.state
 
@@ -561,7 +563,7 @@ class Goal1Contrib extends React.Component {
         detailsInParent: false
       }
     }
-
+    // console.log("jsonData", attachmentDetails, user)
     return (
       <>
         <Row style={{ marginLeft: "0px" }}>
@@ -655,7 +657,7 @@ class Goal1Contrib extends React.Component {
                   1.1 Attach your document (see above description):
                   <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
-                {/* <TextInput
+                <TextInput
                   width="95%"
                   value={Q1_1}
                   callback={(value) => {
@@ -663,13 +665,14 @@ class Goal1Contrib extends React.Component {
                     this.setState({ Q1_1: value })
                   }}
                   readOnly={true}
-                /> */}
+                />
               </Col>
             </Row>
             <Row style={{ marginBottom: "7px" }}>
               <Col md="4">
                 <FileUpload
                   key={"fu_" + goalId}
+                  // value={Q1_1}
                   style={{ marginTop: "-15px", marginBottom: "20px" }}
                   width="100%"
                   callback={(fileInfo) => {
