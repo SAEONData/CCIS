@@ -28,7 +28,7 @@ export const footerContent = {
     {
       text: "Funding",
       links: [
-        { src: DEA_Logo, width: "100%"/*, link: "http://www.example.com"*/ }
+        { text: "Department: Environment, Forestry and Fisheries", link: "https://www.environment.gov.za/" }
       ]
     }
   ]
